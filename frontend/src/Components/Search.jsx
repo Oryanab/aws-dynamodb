@@ -1,31 +1,36 @@
 import React, { useState } from "react";
-import { InputGroup, FormControl, Button, Form } from "react-bootstrap";
+import { InputGroup, FormControl, Button } from "react-bootstrap";
 import axios from "axios";
 
 export default function Search(props) {
-  const [searchKeys, setSearchKeys] = useState("");
+  const [searchKeysSearch, setSearchKeysSearch] = useState("");
 
-  const getListOfWords = async () => {
+  const getListOfWords = async (searchKeys) => {
     const getWords = await axios.get(
       `https://2wolyi7e5c.execute-api.eu-central-1.amazonaws.com/prod/word/${searchKeys}`
     );
-    console.log(getWords.data);
     props.setWordList(getWords.data);
   };
 
   return (
     <div>
-      <header style={{ fontSize: "3vh" }}>
-        <b>English Dictionary</b>{" "}
-      </header>
+      <header style={{ fontSize: "2vw", marginTop: "1vh" }}></header>
       <InputGroup className="mb-3">
         <FormControl
-          onChange={(e) => setSearchKeys(e.target.value)}
-          placeholder="enter a word"
+          value={searchKeysSearch}
+          onChange={(e) => {
+            setSearchKeysSearch(e.target.value.toUpperCase());
+            getListOfWords(e.target.value.toUpperCase());
+          }}
+          placeholder="Type any word/keys as you wish..."
           aria-describedby="basic-addon2"
         />
+
         <Button
-          onClick={(e) => getListOfWords()}
+          onClick={() => {
+            getListOfWords(searchKeysSearch);
+            setSearchKeysSearch("");
+          }}
           variant="outline-secondary"
           id="button-addon2"
         >

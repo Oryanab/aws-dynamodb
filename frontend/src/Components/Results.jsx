@@ -10,10 +10,21 @@ export default function Results(props) {
           <Card.Body>
             <Card.Title>{item.word}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              {item.pos}
+              <b>type: </b>
+              {item.pos === "n."
+                ? "noun"
+                : item.pos === "prep."
+                ? "prep"
+                : item.pos === "a."
+                ? "adjective"
+                : item.pos === "v."
+                ? "verb"
+                : "Adverb "}
             </Card.Subtitle>
-            <Card.Text>{item.definitions.toString()}</Card.Text>
-            <Card.Link href="#">View Info</Card.Link>
+            <Card.Text>
+              <b>Definition: </b>
+              {item.definitions.toString()}
+            </Card.Text>
           </Card.Body>
         </Card>
       ))}
