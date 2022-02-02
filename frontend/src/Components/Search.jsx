@@ -14,26 +14,23 @@ export default function Search(props) {
   const [showSearchBySinglePosQueryWord, setShowSearchBySinglePosQueryWord] =
     useState("none");
 
-  // "/word/{word}/{pos}";
-  // `/part-of-speech/{pos}?letter=`;
-
   const getListOfWords = async (searchWords) => {
     const getWords = await axios.get(
-      `https://2wolyi7e5c.execute-api.eu-central-1.amazonaws.com/prod/word/${searchWords}`
+      `https://2wolyi7e5c.execute-api.eu-central-1.amazonaws.com/api/word/${searchWords}`
     );
     props.setWordList(getWords.data);
   };
 
   const getListOfSearchBySingleWordAndPos = async (searchWords, searchPos) => {
     const getWords = await axios.get(
-      `https://2wolyi7e5c.execute-api.eu-central-1.amazonaws.com/prod/word/${searchWords}/${searchPos}`
+      `https://2wolyi7e5c.execute-api.eu-central-1.amazonaws.com/api/word/${searchWords}/${searchPos}`
     );
     props.setWordList([getWords.data]);
   };
 
   const getListOfSearchBySinglePosQueryWord = async (searchPos, letters) => {
     const getWords = await axios.get(
-      `https://2wolyi7e5c.execute-api.eu-central-1.amazonaws.com/prod/part-of-speech/${searchPos}?letter=${letters}`
+      `https://2wolyi7e5c.execute-api.eu-central-1.amazonaws.com/api/part-of-speech/${searchPos}?letter=${letters}`
     );
     props.setWordList([getWords.data]);
   };
