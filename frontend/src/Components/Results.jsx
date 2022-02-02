@@ -19,7 +19,7 @@ export default function Results(props) {
                 ? "adjective"
                 : item.pos === "v."
                 ? "verb"
-                : "Adverb "}
+                : "Adverb"}
             </Card.Subtitle>
             <Card.Text>
               <b>Definition: </b>

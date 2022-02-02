@@ -4,37 +4,41 @@ const credentials = new AWS.Credentials(
   process.env.ACCESS_KEY_ID,
   process.env.SECRET_ACCESS_KEY
 );
-AWS.config.update({ credentials: credentials, region: "eu-central-1" });
+
+AWS.config.update({ region: "eu-central-1" });
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 // PATHS
 const healthRoute = "/health";
-const searchWord = "/word/:word";
-const searchWordAndPartOfSpeech = "/word/:word/:pos";
-const searchPartOfSpeech = "/part-of-speech/:pos";
-const searchWordPartOfSpeechByLetter = `/part-of-speech/:pos?letter=`;
+const searchWord = "/word/{word}";
+const searchWordAndPartOfSpeech = "/word/{word}/{pos}";
+const searchPartOfSpeech = "/part-of-speech/{pos}";
+const searchWordPartOfSpeechByLetter = `/part-of-speech/{pos}?letter=`;
 
 exports.handler = async (event) => {
   console.log("Request event: ", event);
   let response;
   switch (true) {
-    case event.httpMethod === "GET" && event.path === healthRoute:
+    case event.httpMethod === "GET" && event.resource === healthRoute:
       response = buildResponse(200);
       break;
-    case event.httpMethod === "GET" && event.path === searchWord:
-      response = await returnResultsByWord(event.pathParameters.word);
+    case event.httpMethod === "GET" && event.resource === searchWord:
+      const { word } = event.pathParameters;
+      console.log(word);
+      response = await returnResultsByWord(word);
       break;
-    case event.httpMethod === "GET" && event.path === searchWordAndPartOfSpeech:
+    case event.httpMethod === "GET" &&
+      event.resource === searchWordAndPartOfSpeech:
       response = await returnWordAndPartOfSpeech(
         event.pathParameters.word,
         event.pathParameters.pos
       );
       break;
-    case event.httpMethod === "GET" && event.path === searchPartOfSpeech:
+    case event.httpMethod === "GET" && event.resource === searchPartOfSpeech:
       response = await returnPartOfSpeech(event.pathParameters.pos);
       break;
     case event.httpMethod === "GET" &&
-      event.path === searchWordPartOfSpeechByLetter:
+      event.resource === searchWordPartOfSpeechByLetter:
       response = await returnWordPartOfSpeechByLetter(
         event.pathParameters.pos,
         event.queryStringParameters.letter
@@ -51,7 +55,13 @@ const buildResponse = (statusCode, body) => {
   return {
     statusCode: statusCode,
     headers: {
-      "Content-Type": "application-json",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Headers":
+        "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+      "Access-Control-Allow-Methods": "OPTIONS,POST",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Origin": "*",
+      "X-Requested-With": "*",
     },
     body: JSON.stringify(body),
   };
@@ -70,7 +80,6 @@ const returnResultsByWord = async (word) => {
     .query(params)
     .promise()
     .then((response) => {
-      console.log(buildResponse(200, response.Items));
       return buildResponse(200, response.Items);
     })
     .catch(() => {
