@@ -12,10 +12,13 @@
 # Frontend:
 
 - my project's frontend build from react and deployed to s3 bucket
-- url:
+- url: http://english-dictionary-app.s3-website.eu-central-1.amazonaws.com/
 - Features:
   - On the main page there is a dropdown, in which the user able to select the kind of search he wish to make.
   - Search Single word - Return a list of results containing the word you have searched
   - Search word from single part of speech - Return a list of results containing the word you have searched from the selected part of speech
   - Search part of speech query by letters - Return a list of results query by the letters you have searched from the selected part of speech.
 - Screenshots:
+  ![english-dict-pos-letter-example](assets/english-dict-pos-letter-example.png)
+  ![english-dict-word-example](assets/english-dict-word-example.png)
+  ![english-dict-word-pos-example](assets/english-dict-word-pos-example.png)
