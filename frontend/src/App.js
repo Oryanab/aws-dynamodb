@@ -6,11 +6,9 @@ import Navbar from "./Components/Navbar";
 
 function App() {
   const [wordlist, setWordList] = useState([]);
-
   return (
     <div>
       <Navbar />
-
       <Container>
         <Row style={{ textAlign: "center" }}>
           <Col></Col>
