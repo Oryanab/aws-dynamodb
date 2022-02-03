@@ -1,12 +1,12 @@
 import React from "react";
-import { Card, FormControl, Button } from "react-bootstrap";
+import { Card, FormControl, Button, Accordion } from "react-bootstrap";
 import axios from "axios";
 
 export default function Results(props) {
   return (
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       {props.wordlist.map((item) => (
-        <Card style={{ width: "18rem" }}>
+        <Card style={{ width: "18rem", marginLeft: "-2.5vw" }}>
           <Card.Body>
             <Card.Title>{item.word}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
@@ -22,8 +22,14 @@ export default function Results(props) {
                 : "Adverb"}
             </Card.Subtitle>
             <Card.Text>
-              <b>Definition: </b>
-              {item.definitions.toString()}
+              <Accordion>
+                <Accordion.Item eventKey={item.Id}>
+                  <Accordion.Header>
+                    <b>Definition: </b>
+                  </Accordion.Header>
+                  <Accordion.Body>{item.definitions.toString()}</Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
             </Card.Text>
           </Card.Body>
         </Card>
